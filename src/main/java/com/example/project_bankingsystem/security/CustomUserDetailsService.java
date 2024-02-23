@@ -1,8 +1,6 @@
 package com.example.project_bankingsystem.security;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.project_bankingsystem.entity.RolesEntity;
 import com.example.project_bankingsystem.entity.UserEntity;
 import com.example.project_bankingsystem.repository.RoleRepository;
 import com.example.project_bankingsystem.repository.UserRepository;
@@ -22,6 +19,9 @@ import com.example.project_bankingsystem.utils.exception.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
 
+/*
+ * 비번체크, 역할(Role)저장
+ */
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {

@@ -105,7 +105,12 @@
               </div>
             </div>
             <div class="container2">
-              <form class="form form--hidden" id="login" action="/">
+              <form
+                class="form form--hidden"
+                id="login"
+                action="<%=request.getContextPath()%>/login"
+                method="post"
+              >
                 <h1 class="form__title">Login</h1>
                 <div class="form__message form__message--error">
                   Incorrect username/password combination.
@@ -113,9 +118,10 @@
                 <div class="form__input-group">
                   <input
                     type="text"
+                    name="email"
                     class="form__input"
                     autofocus
-                    placeholder="username or email"
+                    placeholder="email"
                   />
                   <div class="form__input-error-message">
                     This is an Error Message.
@@ -124,13 +130,14 @@
                 <div class="form__input-group">
                   <input
                     type="password"
+                    name="password"
                     class="form__input"
                     autofocus
                     placeholder="password"
                   />
                   <div class="form__input-error-message"></div>
                 </div>
-                <button class="form__button" type="submit">submit</button>
+                <button class="form__button" type="submit">Login</button>
                 <p class="form__text">
                   <a href="./" class="form__link">forgot your pw?</a>
                 </p>
@@ -143,13 +150,14 @@
               <form
                 class="form"
                 id="createAccount"
-                action="<%=request.getContextPath()%>/test"
+                action="<%=request.getContextPath()%>/signup"
                 method="post"
               >
                 <h1 class="form__title">Create Account</h1>
                 <!-- <div class="form__message form__message--error"></div> -->
                 <div class="form__input-group">
                   <input
+                    name="name"
                     id="username"
                     type="text"
                     class="form__input"
@@ -161,6 +169,7 @@
                 <div class="form__input-group">
                   <input
                     type="password"
+                    name="password"
                     class="form__input"
                     autofocus
                     placeholder="password"
@@ -170,6 +179,7 @@
                 <div class="form__input-group">
                   <input
                     type="email"
+                    name="email"
                     class="form__input"
                     autofocus
                     placeholder="email"

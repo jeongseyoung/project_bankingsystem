@@ -21,5 +21,6 @@ public class UserDto {
     private String email;
     private String account;
     private int balance; // 잔고
+    private String role;
     private Date signUpDate;
 }

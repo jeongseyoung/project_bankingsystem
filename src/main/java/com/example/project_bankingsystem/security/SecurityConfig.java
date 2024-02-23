@@ -2,13 +2,15 @@ package com.example.project_bankingsystem.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,18 +19,34 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    // private final CustomUserDetailsService userDetailsService;
+    // private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtEntryPoint jwtEntryPoint;
+    private final JwtManager jwtManager;
     private final CustomUserDetailsService userDetailsService;
 
+    // authorizeHttpRequests 부분 정리 필요함. httpBasic <<<
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(c -> c.disable())
-                .authorizeHttpRequests(a -> a.requestMatchers("/home").permitAll())
-                .authorizeHttpRequests(a -> a.anyRequest().permitAll())
-                .httpBasic(h -> h.disable());
+
+                .exceptionHandling(e -> e.authenticationEntryPoint(jwtEntryPoint))
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .authorizeHttpRequests(a -> a.requestMatchers("/**").permitAll()
+                        .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults());
+
+        http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build(); // requestmatchers, anyrequest 순서 신경써야함?
     }
 
-    // AuthenticationManager 빈 등록
+    @Bean
+    public JwtAuthFilter jwtAuthFilter() {
+        return new JwtAuthFilter(jwtManager, userDetailsService);
+    }
+
+    // AuthenticationManager,BCryptPasswordEncoder 빈 등록
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration a) throws Exception {
         return a.getAuthenticationManager();
@@ -38,11 +56,4 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    // @Bean
-    // public UserDetailsService users() {
-    // UserDetails admin = User.builder()
-    // .username("admin")
-    // }
-
 }

@@ -52,10 +52,10 @@ public class BankAccountEntity {
     private BankMainEntity bankMainEntity;
 
     @OneToMany(mappedBy = "bankAccountEntity", cascade = CascadeType.ALL)
-    List<T_D_W_ListEntity> t_d_w_ListRepository = new ArrayList<T_D_W_ListEntity>();
+    List<T_D_W_ListEntity> t_d_w_List = new ArrayList<T_D_W_ListEntity>();
 
     public void addT_D_WList(T_D_W_ListEntity t_d_w_ListEntity) {
         t_d_w_ListEntity.setBankAccountEntity(this);
-        this.t_d_w_ListRepository.add(t_d_w_ListEntity);
+        this.t_d_w_List.add(t_d_w_ListEntity);
     }
 }

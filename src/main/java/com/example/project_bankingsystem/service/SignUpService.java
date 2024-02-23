@@ -7,9 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.project_bankingsystem.dto.UserDto;
 import com.example.project_bankingsystem.entity.BankAccountEntity;
 import com.example.project_bankingsystem.entity.BankMainEntity;
+import com.example.project_bankingsystem.entity.RolesEntity;
 import com.example.project_bankingsystem.entity.UserEntity;
 import com.example.project_bankingsystem.repository.BankAccountRepository;
 import com.example.project_bankingsystem.repository.BankMainRepository;
+import com.example.project_bankingsystem.repository.RoleRepository;
 import com.example.project_bankingsystem.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class SignUpService {
     private final BankAccountRepository bankAccountRepository;
     private final UserRepository userRepository;
     private final BankMainRepository bankMainRepository;
+    private final RoleRepository roleRepository;
 
     /*
      * User생성(가입)과 계좌개설.
@@ -84,12 +87,13 @@ public class SignUpService {
      * Dto -> Entity
      */
     public UserEntity mapToUserEntity(UserDto userDto, String pw) {
-
+        RolesEntity role = roleRepository.findById(2).get();
         UserEntity userEntity = UserEntity.builder()
                 .name(userDto.getName())
                 .password(pw)
                 .email(userDto.getEmail())
                 .phone(userDto.getPhone())
+                .rolesEntity(role)
                 .build();
         return userEntity;
     }
@@ -104,6 +108,7 @@ public class SignUpService {
                 .email(userEntity.getEmail())
                 .phone(userEntity.getPhone())
                 .account(userEntity.getAccount())
+                .role(userEntity.getRolesEntity().getRole())
                 // .balance(userEntity.getBalance())
                 .signUpDate(userEntity.getSignUpDate())
                 .build();

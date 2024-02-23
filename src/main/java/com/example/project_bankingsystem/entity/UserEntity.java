@@ -58,4 +58,8 @@ public class UserEntity {
     @JoinColumn(name = "bankmain_id")
     BankMainEntity bankMainEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private RolesEntity rolesEntity;
+
 }
