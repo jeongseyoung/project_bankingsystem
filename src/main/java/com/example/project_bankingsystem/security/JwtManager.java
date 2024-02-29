@@ -23,14 +23,12 @@ public class JwtManager {
     private String key;
 
     public SecretKey getSecretKey(String k) {
-        System.out.println("k: " + k);
         byte[] b = Decoders.BASE64.decode(k);
         return Keys.hmacShaKeyFor(b);
     }
 
-    public String createToken(Authentication auth) {
-        System.out.println("auth: " + auth.getName());
-        System.out.println("SecurityStorage.JWT_SECRETKEY: " + key);
+    // accessToken만들기
+    public String createAccessToken(Authentication auth) {
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + SecurityStorage.JWT_EXPIRATION);
 
@@ -44,7 +42,38 @@ public class JwtManager {
         return token;
     }
 
-    // 토큰에서 로그인할 때 입력한 이메일 추출.
+    // refreshToken만들기
+    public String createrefreshToken(Authentication auth) {
+        Date currentDate = new Date();
+        Date expireDate = new Date(currentDate.getTime() + SecurityStorage.JWT_REFRESH_EXPIRATION);
+
+        String token = Jwts.builder()
+                .subject(auth.getName())
+                .issuedAt(currentDate)
+                .expiration(expireDate)
+                .signWith(getSecretKey(key))
+                .compact();
+        return token;
+    }
+
+    // 헤더에 토큰 전달
+    // public void setTokenToHeader(HttpServletResponse response, TokenDto tokenDto)
+    // {
+    // // response.addHeader("Authorization", SecurityStorage.TOKEN_PREFIX +
+    // // tokenDto.getAccessToken());
+    // // response.sendRedirect("/checktoken");
+
+    // // response.sendRedirect("/checktoken");
+    // // response.setHeader("Authorization_Refresh", SecurityStorage.TOKEN_PREFIX +
+    // // tokenDto.getRefreshToken());
+    // // HttpHeaders headers = new HttpHeaders();
+    // // headers.setContentType(MediaType.APPLICATION_JSON);
+    // // headers.set("Authorization_Access", tokenDto.getAccessToken());
+    // // headers.add("Authorization_Refresh", tokenDto.getRefreshToken());
+    // System.out.println("setTokenToHeader 완료");
+    // }
+
+    // 로그인할 때 입력한 이메일 추출(토큰에서 추출).
     public String getUserEmailFromToken(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(getSecretKey(key))

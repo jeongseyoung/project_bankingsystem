@@ -1,7 +1,6 @@
 package com.example.project_bankingsystem.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,8 +37,8 @@ public class SignUpController {
     // @ModelAttribute
     @PostMapping(value = "/signup")
     public ModelAndView signup(UserDto userDto) {
-        if (userRepository.existsByemail(userDto.getEmail())) {
-            throw new CustomException("이미 존재하는 이메일입니다.", ErrorCode.EMAIL_DUPLICATE);
+        if (userDto == null || userRepository.existsByemail(userDto.getEmail())) {
+            throw new CustomException("이메일을 다시 입력하세요.", ErrorCode.EMAIL_DUPLICATE);
         }
         return new ModelAndView("myinfo", "userDto", signUpService.signup(userDto));
     }
