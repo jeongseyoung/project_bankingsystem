@@ -26,25 +26,37 @@ public class AuthController {
     private TokenDto tokenDto;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@RequestBody UserDto userDto, HttpServletResponse response)
+    public ResponseEntity<?> login(@RequestBody UserDto userDto, HttpServletResponse response)
             throws IOException {
         tokenDto = authService.login(userDto, response);
+
         // HttpHeaders httpHeaders = new HttpHeaders();
-        response.sendRedirect("/checktoken");
+        response.sendRedirect("/setheadertoken");
 
         System.out.println("tokenDto: " + tokenDto);
         // return new ModelAndView("checktoken");
-        return new ResponseEntity<TokenDto>(tokenDto, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/checktoken")
-    public ModelAndView test(HttpServletResponse response) {
+    @GetMapping("/setheadertoken")
+    public ResponseEntity<?> test(HttpServletResponse response) throws IOException {
 
         response.addHeader("Authorization", SecurityStorage.TOKEN_PREFIX +
                 tokenDto.getAccessToken());
+        response.addHeader("Authorization_refresh", SecurityStorage.TOKEN_PREFIX +
+                tokenDto.getRefreshToken());
+        // response.sendRedirect("/currentinfo"); // 이거 하면 토큰 저장안됨
+        System.out.println("mario3");
+        return new ResponseEntity<>(HttpStatus.OK);
+        // return new ModelAndView("currentinfo", HttpStatus.OK);
+        // return "redirect:/currentinfo";
 
-        return new ModelAndView("checktoken");
+    }
 
+    @GetMapping("/currentinfo") // 인터넷창 주소
+    public ModelAndView currentinfo() {
+        System.out.println("currentinfo: ");
+        return new ModelAndView("currentinfo"); // 파일명
     }
 
     @GetMapping("/test")

@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.project_bankingsystem.dto.TokenDto;
 import com.example.project_bankingsystem.dto.UserDto;
+import com.example.project_bankingsystem.entity.RefreshTokenEntity;
+import com.example.project_bankingsystem.entity.UserEntity;
+import com.example.project_bankingsystem.repository.RefreshTokenRepository;
+import com.example.project_bankingsystem.repository.UserRepository;
 import com.example.project_bankingsystem.security.JwtManager;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +25,8 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtManager jwtManager;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
 
     public TokenDto login(UserDto userDto, HttpServletResponse response) throws IOException {
         Authentication auth = authenticationManager
@@ -30,8 +36,21 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(auth);
         // access, refresh 토큰 만들고 리턴.
         TokenDto tokenDto = new TokenDto(jwtManager.createAccessToken(auth), jwtManager.createrefreshToken(auth));
-        // jwtManager.setTokenToHeader(response, tokenDto);
+
+        UserEntity userEntity = userRepository.findByemail(auth.getName()).get();
+        RefreshTokenEntity refreshTokenEntity = mapToRefreshTokenEntity(tokenDto.getRefreshToken(), userEntity);
+        userEntity.setRefreshTokenEntity(refreshTokenEntity);
+
+        refreshTokenRepository.save(refreshTokenEntity);
+        userRepository.save(userEntity);
         return tokenDto;
     }
 
+    public RefreshTokenEntity mapToRefreshTokenEntity(String refreshToken, UserEntity userEntity) {
+        RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.builder()
+                .refreshToken(refreshToken)
+                .userEntity(userEntity)
+                .build();
+        return refreshTokenEntity;
+    }
 }

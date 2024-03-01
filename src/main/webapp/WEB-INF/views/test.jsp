@@ -9,8 +9,11 @@
   <body>
     <p>hihi</p>
     <br />
-    <button onclick="f()">ffffffffff</button><br />
+    <input type="text" id="login_email" />
+    <input type="text" id="pw" />
+    <button onclick="login()">ffffffffff</button><br />
     <button onclick="last()">xhrrrrrrrrrrrrrrrrrrr</button>
-    <script src="./js/checktoken.js"></script>
+
+    <script src="./js/test.js"></script>
   </body>
 </html>

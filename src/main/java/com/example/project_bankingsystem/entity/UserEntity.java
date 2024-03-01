@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,5 +62,13 @@ public class UserEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private RolesEntity rolesEntity;
+
+    @OneToOne
+    @JoinColumn(name = "refreshtoken_id")
+    private RefreshTokenEntity refreshTokenEntity;
+
+    void addRefreshTokenEntity(RefreshTokenEntity refreshTokenEntity) {
+        this.refreshTokenEntity = refreshTokenEntity;
+    }
 
 }

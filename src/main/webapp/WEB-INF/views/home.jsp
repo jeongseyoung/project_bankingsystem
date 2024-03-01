@@ -105,12 +105,7 @@
               </div>
             </div>
             <div class="container2">
-              <form
-                class="form form--hidden"
-                id="login"
-                action="<%=request.getContextPath()%>/login"
-                method="post"
-              >
+              <div class="form form--hidden" id="login">
                 <h1 class="form__title">Login</h1>
                 <div class="form__message form__message--error">
                   Incorrect username/password combination.
@@ -118,6 +113,7 @@
                 <div class="form__input-group">
                   <input
                     type="text"
+                    id="login_email"
                     name="email"
                     class="form__input"
                     autofocus
@@ -130,14 +126,18 @@
                 <div class="form__input-group">
                   <input
                     type="password"
+                    id="pw"
                     name="password"
                     class="form__input"
+                    autocomplete="on"
                     autofocus
                     placeholder="password"
                   />
                   <div class="form__input-error-message"></div>
                 </div>
-                <button class="form__button" type="submit">Login</button>
+                <button class="form__button" type="submit" onclick="login()">
+                  Login
+                </button>
                 <p class="form__text">
                   <a href="./" class="form__link">forgot your pw?</a>
                 </p>
@@ -146,7 +146,7 @@
                     >sign up</a
                   >
                 </p>
-              </form>
+              </div>
               <form
                 class="form"
                 id="createAccount"
@@ -171,6 +171,7 @@
                     type="password"
                     name="password"
                     class="form__input"
+                    autocomplete="on"
                     autofocus
                     placeholder="password"
                   />
@@ -208,6 +209,6 @@
           </div>
         </section>
       </div>
-      <script src="./js/main.js"></script>
+      <script src="./js/main.js" defer></script>
     </body></html
 ></span>

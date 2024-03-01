@@ -1,3 +1,4 @@
+// sign up + login 화면전환
 document.addEventListener("DOMContentLoaded", () => {
   //console.log("token: ", Request.prototype.headers);
 
@@ -18,39 +19,35 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// const test = document.querySelector(".form__button");
-// test.addEventListener("click", () => {
-//   const name = document.getElementById("username");
-//   console.log("username: ", username);
-// });
-function c() {
-  const name = document.getElementById("#username");
-  console.log("username: ", name);
-}
-
+// 로그인 fetch(비동기처리)
 function login() {
+  const email = document.getElementById("login_email").value;
+  const password = document.getElementById("pw").value;
   fetch("/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      email: "sysy@sy.com",
-      password: "sy",
+      email: email,
+      password: password,
     }),
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error");
-      }
-    })
-    .then((request) => {
+    .then((request, response) => {
+      //로컬저장소에 accesstoken저장
       localStorage.setItem(
         "Authorization",
         request.headers.get("Authorization")
       );
-    });
+      // 세션에 refreshtoken저장
+      sessionStorage.setItem(
+        "Authorization_refresh",
+        request.headers.get("Authorization_refresh")
+      );
+    })
+    .then(() => (window.location.href = "currentinfo"));
 }
 const getToken = localStorage.getItem("Authorization");
-//async await fetch로도 할 수 있음.
-// refreshtoken
+
+// form 하고 버튼(submit)하고 같이 쓰면 안됨.
+//통신은 다른 로직에 비해 오래 걸리기 때문에 비동기 처리돼서 then 메서드를 사용
