@@ -80,6 +80,7 @@ public class JwtManager {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+        // System.out.println("Claims: " + claims.getSubject()); -> ok
         return claims.getSubject();
     }
 
@@ -89,7 +90,7 @@ public class JwtManager {
             Jwts.parser().verifyWith(getSecretKey(key)).build().parseSignedClaims(token);
             return true;
         } catch (Exception e) {
-            throw new CustomException("토큰만료, " + e.getMessage(), ErrorCode.TOKEN_EXPIRED);
+            throw new CustomException("validateToken -> TOKEN ERROR, " + e.getMessage(), ErrorCode.TOKEN_EXPIRED);
         }
     }
 }

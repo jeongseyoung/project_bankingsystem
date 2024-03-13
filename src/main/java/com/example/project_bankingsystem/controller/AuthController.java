@@ -12,8 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.project_bankingsystem.dto.TokenDto;
 import com.example.project_bankingsystem.dto.UserDto;
+import com.example.project_bankingsystem.entity.UserEntity;
+import com.example.project_bankingsystem.repository.UserRepository;
+import com.example.project_bankingsystem.security.JwtManager;
 import com.example.project_bankingsystem.security.SecurityStorage;
 import com.example.project_bankingsystem.service.AuthService;
+import com.example.project_bankingsystem.service.MyAccountService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +26,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
 
+    private final MyAccountService accountService;
     private final AuthService authService;
+    private final JwtManager jwtManager;
+    private final UserRepository userRepository;
     private TokenDto tokenDto;
 
     @PostMapping("/login")
@@ -30,37 +37,40 @@ public class AuthController {
             throws IOException {
         tokenDto = authService.login(userDto, response);
 
-        // HttpHeaders httpHeaders = new HttpHeaders();
-        response.sendRedirect("/setheadertoken");
+        // // HttpHeaders httpHeaders = new HttpHeaders();
+        response.sendRedirect("/myhome");
 
         System.out.println("tokenDto: " + tokenDto);
-        // return new ModelAndView("checktoken");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/setheadertoken")
-    public ResponseEntity<?> test(HttpServletResponse response) throws IOException {
+    @GetMapping("/myhome")
+    public ModelAndView setheadertoken(HttpServletResponse response) throws IOException {
 
         response.addHeader("Authorization", SecurityStorage.TOKEN_PREFIX +
                 tokenDto.getAccessToken());
         response.addHeader("Authorization_refresh", SecurityStorage.TOKEN_PREFIX +
                 tokenDto.getRefreshToken());
         // response.sendRedirect("/currentinfo"); // 이거 하면 토큰 저장안됨
-        System.out.println("mario3");
-        return new ResponseEntity<>(HttpStatus.OK);
-        // return new ModelAndView("currentinfo", HttpStatus.OK);
-        // return "redirect:/currentinfo";
+        String email = jwtManager.getUserEmailFromToken(tokenDto.getAccessToken());
 
-    }
+        return new ModelAndView("myhome", "list",
+                accountService.myaccount(mapToUserDto(userRepository.findByemail(email).get()))); // -> accountDto가 필요함
 
-    @GetMapping("/currentinfo") // 인터넷창 주소
-    public ModelAndView currentinfo() {
-        System.out.println("currentinfo: ");
-        return new ModelAndView("currentinfo"); // 파일명
     }
 
     @GetMapping("/test")
     public String test() {
+        System.out.println("zzzzzzzzzzz");
         return "test";
+    }
+
+    public UserDto mapToUserDto(UserEntity userEntity) {
+        UserDto setUserDto = UserDto.builder()
+                .name(userEntity.getName())
+                .phone(userEntity.getPhone())
+                .email(userEntity.getEmail())
+                .build();
+        return setUserDto;
     }
 }

@@ -33,7 +33,7 @@ function login() {
       password: password,
     }),
   })
-    .then((request, response) => {
+    .then((request) => {
       //로컬저장소에 accesstoken저장
       localStorage.setItem(
         "Authorization",
@@ -44,10 +44,13 @@ function login() {
         "Authorization_refresh",
         request.headers.get("Authorization_refresh")
       );
+      //return request;
     })
-    .then(() => (window.location.href = "currentinfo"));
+    .then(() => (window.location.href = "/myhome"));
 }
-const getToken = localStorage.getItem("Authorization");
+
+// const getToken = localStorage.getItem("Authorization");
 
 // form 하고 버튼(submit)하고 같이 쓰면 안됨.
-//통신은 다른 로직에 비해 오래 걸리기 때문에 비동기 처리돼서 then 메서드를 사용
+
+// 통신은 다른 로직에 비해 오래 걸리기 때문에 비동기 처리돼서 then 메서드를 사용

@@ -1,9 +1,9 @@
-function f() {
+function test() {
   const email = document.getElementById("login_email").value;
   const password = document.getElementById("pw").value;
   console.log(email);
   fetch("/login", {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
@@ -24,12 +24,9 @@ function f() {
 }
 const getToken = localStorage.getItem("Authorization");
 
-function login() {
+function f() {
   const email = document.getElementById("login_email").value;
   const password = document.getElementById("pw").value;
-
-  // const email = $("login_email").value; ////////////////
-  // const password = $("pw").value; //////////////////////
 
   fetch("/login", {
     method: "POST",
@@ -50,6 +47,10 @@ function login() {
   // .then((request) =>
   //   localStorage.setItem("Authorization", request.headers.get("Authorization"))
   // );
+}
+
+function tt() {
+  console.log("tt");
 }
 // function login() {
 //   const email = document.getElementById("login_email").value;
@@ -107,3 +108,77 @@ function login() {
 //xhr.send();
 //console.log(xhr.status);
 //}
+
+function plz() {
+  const email = document.getElementById("login_email").value;
+  const password = document.getElementById("pw").value;
+  fetch("/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password,
+    }),
+  })
+    .then((request) => {
+      //로컬저장소에 accesstoken저장
+      localStorage.setItem(
+        "Authorization",
+        request.headers.get("Authorization")
+      );
+      // 세션에 refreshtoken저장
+      sessionStorage.setItem(
+        "Authorization_refresh",
+        request.headers.get("Authorization_refresh")
+      );
+    })
+    .finally(console.log("ddd"));
+  //.then(() => (window.location.href = "/myhome"));
+}
+
+function tokenheader() {
+  const res = new Response();
+  //let req = new Request(init);
+  const token = localStorage.getItem("Authorization");
+  res.headers.set("Authorization", token);
+  console.log(res.redirected, token);
+  window.location.href = "/tokentest";
+  // let a = req.headers.set(
+  //   "Authorization",
+  //   localStorage.getItem("Authorization")
+  // );
+  //console.log("a: ", a);
+}
+
+function tokenfetch() {
+  //const res = new Response();
+  const token = localStorage.getItem("Authorization");
+  console.log(token);
+  //res.headers.set("Authorization", token);
+  fetch("/tokentest", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      accessToken: token,
+    }),
+  });
+  //.then((response) => response.headers.set("Authorization", token))
+  //.then(() => (window.location.href = "/tokentest"));
+}
+function tokensession() {
+  const token = localStorage.getItem("Authorization");
+  //sessionStorage.getItem("Authorization_Refresh");
+  console.log(token);
+  //window.location.href = "/tokentest";
+}
+// var req = new Request(request.url, {
+//   method: request.method,
+//   headers: request.headers,
+//   mode: "same-origin", // need to set this properly
+//   credentials: request.credentials,
+//   redirect: "manual", // let browser handle redirects
+// });

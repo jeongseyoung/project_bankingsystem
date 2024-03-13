@@ -5,8 +5,11 @@ import java.util.Date;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.example.project_bankingsystem.dto.BankAccountDto;
+import com.example.project_bankingsystem.dto.TokenDto;
+import com.example.project_bankingsystem.dto.UserDto;
 import com.example.project_bankingsystem.entity.BankAccountEntity;
 import com.example.project_bankingsystem.entity.BankMainEntity;
 import com.example.project_bankingsystem.entity.T_D_W_ListEntity;
@@ -31,13 +34,14 @@ public class Depo_Withdrawal_Service {
 
     Date today = new Date();
 
-    // transfer 이체
+    // transfer 이체 -> ok
     @Transactional(rollbackFor = {
             Exception.class, CustomException.class
     })
-    public BankAccountDto transfer(BankAccountDto bankAccountDto) {
+    public UserDto transfer(BankAccountDto bankAccountDto) {
+        String myAccount = userRepository.findByemail(bankAccountDto.getEmail()).get().getAccount();
         // A = 나, B = 상대
-        BankAccountEntity person_A = findAccount_BankAccountEntity(bankAccountDto.getMyaccount());
+        BankAccountEntity person_A = findAccount_BankAccountEntity(myAccount);
         BankAccountEntity person_B = findAccount_BankAccountEntity(bankAccountDto.getOpponent_account());
 
         T_D_W_ListEntity t_d_w_ListEntity = mapToT_D_W_ListEntity(bankAccountDto);
@@ -70,8 +74,10 @@ public class Depo_Withdrawal_Service {
         } else {
             throw new CustomException("비밀번호가 일치하지 않습니다.", ErrorCode.PASSWORD_INCORRECT);
         }
-
-        return mapToBankAccountDto(person_A);
+        // 트랜잭션 동작여부 확인
+        System.out.println("inTransaction: " + TransactionSynchronizationManager.isActualTransactionActive());
+        return mapToUserDto(userRepository.findByemail(bankAccountDto.getEmail()).get(),
+                findAccount_BankAccountEntity(myAccount));
     }
 
     // 입금 -> 나에게 입금
@@ -183,4 +189,15 @@ public class Depo_Withdrawal_Service {
         return setListEntity;
     }
 
+    public UserDto mapToUserDto(UserEntity userEntity, BankAccountEntity bankAccountEntity) {
+        UserDto setUserDto = UserDto.builder()
+                .name(userEntity.getName())
+                .phone(userEntity.getPhone())
+                .email(userEntity.getEmail())
+                .account(bankAccountEntity.getAccount())
+                .balance(bankAccountEntity.getBalance())
+                .build();
+        return setUserDto;
+
+    }
 }

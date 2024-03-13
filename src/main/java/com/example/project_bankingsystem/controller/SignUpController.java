@@ -30,7 +30,7 @@ public class SignUpController {
 
     // @PreAuthorize
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String sb() {
+    public String home() {
         return "home";
     }
 

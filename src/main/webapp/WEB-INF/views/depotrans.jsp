@@ -25,8 +25,8 @@
               <li>
                 <a href="#">
                   <i class="fas fa-user"></i>
-                  <span class="nav-item">Dashboard</span>
-                </a>
+                  <span class="nav-item"
+                    >Depo/Trans</span>                
               </li>
               <li>
                 <a href="#">
@@ -147,68 +147,60 @@
                   >
                 </p>
               </div>
-              <form
+               <div
                 class="form"
                 id="createAccount"
-                action="<%=request.getContextPath()%>/signup"
-                method="post"
-              >
-                <h1 class="form__title">Create Account</h1>
+              > 
+                <h1 class="form__title">TRANSFER</h1>
                 <!-- <div class="form__message form__message--error"></div> -->
                 <div class="form__input-group">
+                    <!--이체하기-->
                   <input
-                    name="name"
-                    id="username"
+                    name="opponent_account"
+                    id="opponent_account"
                     type="text"
                     class="form__input"
                     autofocus
-                    placeholder="username"
+                    placeholder="opponent account?"
                   />
                   <!-- <div class="form__input-error-message"></div> -->
                 </div>
                 <div class="form__input-group">
                   <input
-                    type="password"
-                    name="password"
+                    type="number"
+                    name="transferFee"
+                    id="transferFee"
                     class="form__input"
                     autocomplete="on"
                     autofocus
-                    placeholder="password"
+                    placeholder="transferFee"
                   />
-                  <div class="form__input-error-message"></div>
                 </div>
                 <div class="form__input-group">
-                  <input
-                    type="email"
-                    name="email"
-                    class="form__input"
-                    autofocus
-                    placeholder="email"
-                  />
-                  <div class="form__input-error-message"></div>
-                </div>
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      class="form__input"
+                      autocomplete="on"
+                      autofocus
+                      placeholder="password"
+                    />
+                    <!-- <div class="form__input-error-message"></div> -->
+                  </div><br>
+                  <button onclick="transfer()">transfer</button>
+                <!-- <input type="submit" class="form__button" value="submit" /> -->
 
-                <div class="form__input-group">
-                  <input
-                    type="text"
-                    class="form__input"
-                    autofocus
-                    placeholder="phone"
-                  />
-                  <div class="form__input-error-message"></div>
-                </div>
-                <input type="submit" class="form__button" value="submit" />
-
-                <p class="form__text">
+                <!-- <p class="form__text">
                   <a class="form__link" href="./" id="linkLogin"
                     >Already have an Account? Sign in!!</a
-                  >
+                  > -->
                 </p>
-              </form>
+              </div>
             </div>
           </div>
         </section>
       </div>
-      <script src="./js/main.js" defer></script>
+      <script src="./js/depotrans.js" defer></script>
     </body></html
 ></span>

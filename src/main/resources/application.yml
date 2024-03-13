@@ -31,6 +31,8 @@ spring:
       hibernate:
         format_sql: true
       dialect: org.hibernate.dialect.MySQLDialect
-
+# logging:
+#   level:
+#     org.springframework.security.web: DEBUG
 jwt:
   key: "sdf90s8df7s09fsdf09sdfsd0f92m309sdjfs0d9fjs09gjs09f"

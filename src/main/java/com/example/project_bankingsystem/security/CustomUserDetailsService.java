@@ -34,6 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserEntity userEntity = userRepository.findByemail(email).orElseThrow(() -> {
             throw new CustomException("없는 email입니다.", ErrorCode.EMAIL_NOT_FOUND);
         });
+        System.out.println("role?: " + userEntity.getRolesEntity().getRole());
         // role 각각을 grantedautority에 추가
         // List<RolesEntity> rolesEntity = roleRepository.findAll();
         Collection<GrantedAuthority> grantedAuthority = roleRepository.findAll().stream()

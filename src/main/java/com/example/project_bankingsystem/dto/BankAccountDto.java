@@ -14,14 +14,16 @@ import lombok.Setter;
 @Setter
 @Builder
 public class BankAccountDto {
+    private String email;
     private String myaccount; // 계좌
     private String opponent_account;
     private String password;
-
+    private String accessToken;
     private int transferFee; // 이체요청
     private int depositFee; // 입금
     private int withdrawalFee; // 출금
     private int balance; // 잔고
 
     private Date thisDate;
+
 }

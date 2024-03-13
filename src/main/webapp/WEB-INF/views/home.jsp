@@ -25,8 +25,8 @@
               <li>
                 <a href="#">
                   <i class="fas fa-user"></i>
-                  <span class="nav-item">Dashboard</span>
-                </a>
+                  <span class="nav-item"
+                    >Depo/Trans</span>                
               </li>
               <li>
                 <a href="#">

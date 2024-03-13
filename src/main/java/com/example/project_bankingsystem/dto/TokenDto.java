@@ -1,8 +1,10 @@
 package com.example.project_bankingsystem.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class TokenDto {
     private String accessToken;
     private String refreshToken;

@@ -11,6 +11,8 @@ public interface BankAccountRepository extends JpaRepository<BankAccountEntity, 
 
     Optional<BankAccountEntity> findByaccount(String account);
 
+    // Optional<BankAccountEntity> findByuser_id(int id);
+
     Optional<BankAccountEntity> findByuserEntity(UserEntity userEntity);
 
 }
