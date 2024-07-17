@@ -37,7 +37,7 @@ public class AuthController {
             throws IOException {
         tokenDto = authService.login(userDto, response);
 
-        // // HttpHeaders httpHeaders = new HttpHeaders();
+        //HttpHeaders httpHeaders = new HttpHeaders();
         response.sendRedirect("/myhome");
 
         System.out.println("tokenDto: " + tokenDto);
