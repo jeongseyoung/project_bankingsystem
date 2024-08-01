@@ -73,7 +73,7 @@ public class JwtManager {
     // System.out.println("setTokenToHeader 완료");
     // }
 
-    // 로그인할 때 입력한 이메일 추출(토큰에서 추출).
+    // 로그인할 때 입력한 이메일 추출(토큰에서 추출)
     public String getUserEmailFromToken(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(getSecretKey(key))
