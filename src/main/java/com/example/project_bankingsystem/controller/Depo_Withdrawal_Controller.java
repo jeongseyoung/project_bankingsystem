@@ -50,22 +50,22 @@ public class Depo_Withdrawal_Controller {
     // 출금
     @PostMapping("/withdrawal")
     public ResponseEntity<BankAccountDto> withdrawal(@RequestBody BankAccountDto bankAccountDto) {
-        System.out.println("bankAccountDto: " + bankAccountDto.getMyaccount());
+        //System.out.println("bankAccountDto: " + bankAccountDto.getMyaccount());
         return new ResponseEntity<BankAccountDto>(depo_withdrawal_Service.withdrawal(bankAccountDto),
                 HttpStatus.OK);
     }
 
     @GetMapping("/depotrans")
     public ModelAndView depotrans() {
-        System.out.println("depotrans");
+        //System.out.println("depotrans");
 
         return new ModelAndView("depotrans");
     }
 
     @PostMapping("/tokentest") // @RequestBody String token
     public String tokentest(@RequestBody TokenDto tokenDto) {
-        System.out.println("TOKEN TESTTTTTTTTT");
-        System.out.println("tokenDto: " + tokenDto.getAccessToken());
+        //System.out.println("TOKEN TESTTTTTTTTT");
+        //System.out.println("tokenDto: " + tokenDto.getAccessToken());
 
         if (jwtManager.validateToken(tokenDto.getAccessToken().substring(7, tokenDto.getAccessToken().length()))) {
             System.out.println("TRUE");

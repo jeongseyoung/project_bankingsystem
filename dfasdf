@@ -1,0 +1,322 @@
+warning: in the working copy of 'build.gradle', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/test/java/com/example/project_bankingsystem/ProjectBankingsystemApplicationTests.java', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/src/main/java/com/example/project_bankingsystem/controller/AuthController.java b/src/main/java/com/example/project_bankingsystem/controller/AuthController.java[m
+[1mindex 25e2213..9191b7a 100644[m
+[1m--- a/src/main/java/com/example/project_bankingsystem/controller/AuthController.java[m
+[1m+++ b/src/main/java/com/example/project_bankingsystem/controller/AuthController.java[m
+[36m@@ -35,8 +35,9 @@[m [mpublic class AuthController {[m
+     @PostMapping("/login")[m
+     public ResponseEntity<?> login(@RequestBody UserDto userDto, HttpServletResponse response)[m
+             throws IOException {[m
+[32m+[m[32m        System.out.println("aaa" + userDto.getId() + " " + userDto.getEmail());[m[41m[m
+         tokenDto = authService.login(userDto, response);[m
+[31m-[m
+[32m+[m[32m        System.out.println("token " + tokenDto.getAccessToken());[m[41m[m
+         // // HttpHeaders httpHeaders = new HttpHeaders();[m
+         response.sendRedirect("/myhome");[m
+ [m
+[36m@@ -56,13 +57,6 @@[m [mpublic class AuthController {[m
+ [m
+         return new ModelAndView("myhome", "list",[m
+                 accountService.myaccount(mapToUserDto(userRepository.findByemail(email).get()))); // -> accountDto가 필요함[m
+[31m-[m
+[31m-    }[m
+[31m-[m
+[31m-    @GetMapping("/test")[m
+[31m-    public String test() {[m
+[31m-        System.out.println("zzzzzzzzzzz");[m
+[31m-        return "test";[m
+     }[m
+ [m
+     public UserDto mapToUserDto(UserEntity userEntity) {[m
+[1mdiff --git a/src/main/java/com/example/project_bankingsystem/controller/Depo_Withdrawal_Controller.java b/src/main/java/com/example/project_bankingsystem/controller/Depo_Withdrawal_Controller.java[m
+[1mindex 740c3bb..cb07f82 100644[m
+[1m--- a/src/main/java/com/example/project_bankingsystem/controller/Depo_Withdrawal_Controller.java[m
+[1m+++ b/src/main/java/com/example/project_bankingsystem/controller/Depo_Withdrawal_Controller.java[m
+[36m@@ -50,22 +50,22 @@[m [mpublic class Depo_Withdrawal_Controller {[m
+     // 출금[m
+     @PostMapping("/withdrawal")[m
+     public ResponseEntity<BankAccountDto> withdrawal(@RequestBody BankAccountDto bankAccountDto) {[m
+[31m-        System.out.println("bankAccountDto: " + bankAccountDto.getMyaccount());[m
+[32m+[m[32m        //System.out.println("bankAccountDto: " + bankAccountDto.getMyaccount());[m[41m[m
+         return new ResponseEntity<BankAccountDto>(depo_withdrawal_Service.withdrawal(bankAccountDto),[m
+                 HttpStatus.OK);[m
+     }[m
+ [m
+     @GetMapping("/depotrans")[m
+     public ModelAndView depotrans() {[m
+[31m-        System.out.println("depotrans");[m
+[32m+[m[32m        //System.out.println("depotrans");[m[41m[m
+ [m
+         return new ModelAndView("depotrans");[m
+     }[m
+ [m
+     @PostMapping("/tokentest") // @RequestBody String token[m
+     public String tokentest(@RequestBody TokenDto tokenDto) {[m
+[31m-        System.out.println("TOKEN TESTTTTTTTTT");[m
+[31m-        System.out.println("tokenDto: " + tokenDto.getAccessToken());[m
+[32m+[m[32m        //System.out.println("TOKEN TESTTTTTTTTT");[m[41m[m
+[32m+[m[32m        //System.out.println("tokenDto: " + tokenDto.getAccessToken());[m[41m[m
+ [m
+         if (jwtManager.validateToken(tokenDto.getAccessToken().substring(7, tokenDto.getAccessToken().length()))) {[m
+             System.out.println("TRUE");[m
+[1mdiff --git a/src/main/java/com/example/project_bankingsystem/controller/SignUpController.java b/src/main/java/com/example/project_bankingsystem/controller/SignUpController.java[m
+[1mindex 4b44301..f26c5be 100644[m
+[1m--- a/src/main/java/com/example/project_bankingsystem/controller/SignUpController.java[m
+[1m+++ b/src/main/java/com/example/project_bankingsystem/controller/SignUpController.java[m
+[36m@@ -37,6 +37,7 @@[m [mpublic class SignUpController {[m
+     // @ModelAttribute[m
+     @PostMapping(value = "/signup")[m
+     public ModelAndView signup(UserDto userDto) {[m
+[32m+[m[32m        System.out.println("controller signup: ");[m[41m[m
+         if (userDto == null || userRepository.existsByemail(userDto.getEmail())) {[m
+             throw new CustomException("이메일을 다시 입력하세요.", ErrorCode.EMAIL_DUPLICATE);[m
+         }[m
+[1mdiff --git a/src/main/java/com/example/project_bankingsystem/security/JwtManager.java b/src/main/java/com/example/project_bankingsystem/security/JwtManager.java[m
+[1mindex 03e73c7..ea3f1b0 100644[m
+[1m--- a/src/main/java/com/example/project_bankingsystem/security/JwtManager.java[m
+[1m+++ b/src/main/java/com/example/project_bankingsystem/security/JwtManager.java[m
+[36m@@ -38,7 +38,7 @@[m [mpublic class JwtManager {[m
+                 .expiration(expireDate)[m
+                 .signWith(getSecretKey(key))[m
+                 .compact();[m
+[31m-[m
+[32m+[m[32m        System.out.println(token);[m[41m[m
+         return token;[m
+     }[m
+ [m
+[1mdiff --git a/src/main/java/com/example/project_bankingsystem/security/SecurityConfig.java b/src/main/java/com/example/project_bankingsystem/security/SecurityConfig.java[m
+[1mindex 4dab082..fb565f8 100644[m
+[1m--- a/src/main/java/com/example/project_bankingsystem/security/SecurityConfig.java[m
+[1m+++ b/src/main/java/com/example/project_bankingsystem/security/SecurityConfig.java[m
+[36m@@ -31,7 +31,7 @@[m [mpublic class SecurityConfig {[m
+     // authorizeHttpRequests 부분 정리 필요함. httpBasic <<<[m
+     @Bean[m
+     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {[m
+[31m-        http.csrf(c -> c.disable())[m
+[32m+[m[32m        http.csrf(csrf -> csrf.disable())[m[41m[m
+ [m
+                 .exceptionHandling(e -> e.authenticationEntryPoint(jwtEntryPoint))[m
+                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))[m
+[1mdiff --git a/src/main/java/com/example/project_bankingsystem/service/AuthService.java b/src/main/java/com/example/project_bankingsystem/service/AuthService.java[m
+[1mindex 1f0dd77..afc5561 100644[m
+[1m--- a/src/main/java/com/example/project_bankingsystem/service/AuthService.java[m
+[1m+++ b/src/main/java/com/example/project_bankingsystem/service/AuthService.java[m
+[36m@@ -7,6 +7,7 @@[m [mimport org.springframework.security.authentication.UsernamePasswordAuthenticatio[m
+ import org.springframework.security.core.Authentication;[m
+ import org.springframework.security.core.context.SecurityContextHolder;[m
+ import org.springframework.stereotype.Service;[m
+[32m+[m[32mimport org.springframework.transaction.annotation.Transactional;[m[41m[m
+ [m
+ import com.example.project_bankingsystem.dto.TokenDto;[m
+ import com.example.project_bankingsystem.dto.UserDto;[m
+[36m@@ -15,6 +16,7 @@[m [mimport com.example.project_bankingsystem.entity.UserEntity;[m
+ import com.example.project_bankingsystem.repository.RefreshTokenRepository;[m
+ import com.example.project_bankingsystem.repository.UserRepository;[m
+ import com.example.project_bankingsystem.security.JwtManager;[m
+[32m+[m[32mimport com.example.project_bankingsystem.utils.exception.CustomException;[m[41m[m
+ [m
+ import jakarta.servlet.http.HttpServletResponse;[m
+ import lombok.RequiredArgsConstructor;[m
+[36m@@ -28,6 +30,9 @@[m [mpublic class AuthService {[m
+     private final RefreshTokenRepository refreshTokenRepository;[m
+     private final UserRepository userRepository;[m
+ [m
+[32m+[m[32m    @Transactional(rollbackFor = {[m[41m[m
+[32m+[m[32m            Exception.class, CustomException.class[m[41m[m
+[32m+[m[32m    })[m[41m[m
+     public TokenDto login(UserDto userDto, HttpServletResponse response) throws IOException {[m
+         Authentication auth = authenticationManager[m
+                 .authenticate(new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword()));[m
+[36m@@ -36,7 +41,7 @@[m [mpublic class AuthService {[m
+         SecurityContextHolder.getContext().setAuthentication(auth);[m
+         // access, refresh 토큰 만들고 리턴.[m
+         TokenDto tokenDto = new TokenDto(jwtManager.createAccessToken(auth), jwtManager.createrefreshToken(auth));[m
+[31m-[m
+[32m+[m[32m        System.out.println(tokenDto);[m[41m[m
+         UserEntity userEntity = userRepository.findByemail(auth.getName()).get();[m
+         RefreshTokenEntity refreshTokenEntity = mapToRefreshTokenEntity(tokenDto.getRefreshToken(), userEntity);[m
+         userEntity.setRefreshTokenEntity(refreshTokenEntity);[m
+[1mdiff --git a/src/main/java/com/example/project_bankingsystem/service/Depo_Withdrawal_Service.java b/src/main/java/com/example/project_bankingsystem/service/Depo_Withdrawal_Service.java[m
+[1mindex 02c4aa5..5f60cd6 100644[m
+[1m--- a/src/main/java/com/example/project_bankingsystem/service/Depo_Withdrawal_Service.java[m
+[1m+++ b/src/main/java/com/example/project_bankingsystem/service/Depo_Withdrawal_Service.java[m
+[36m@@ -8,7 +8,6 @@[m [mimport org.springframework.transaction.annotation.Transactional;[m
+ import org.springframework.transaction.support.TransactionSynchronizationManager;[m
+ [m
+ import com.example.project_bankingsystem.dto.BankAccountDto;[m
+[31m-import com.example.project_bankingsystem.dto.TokenDto;[m
+ import com.example.project_bankingsystem.dto.UserDto;[m
+ import com.example.project_bankingsystem.entity.BankAccountEntity;[m
+ import com.example.project_bankingsystem.entity.BankMainEntity;[m
+[1mdiff --git a/src/main/java/com/example/project_bankingsystem/service/SignUpService.java b/src/main/java/com/example/project_bankingsystem/service/SignUpService.java[m
+[1mindex afae60a..ce69a98 100644[m
+[1m--- a/src/main/java/com/example/project_bankingsystem/service/SignUpService.java[m
+[1m+++ b/src/main/java/com/example/project_bankingsystem/service/SignUpService.java[m
+[36m@@ -3,6 +3,7 @@[m [mpackage com.example.project_bankingsystem.service;[m
+ import org.mindrot.jbcrypt.BCrypt;[m
+ import org.springframework.stereotype.Service;[m
+ import org.springframework.transaction.annotation.Transactional;[m
+[32m+[m[32mimport org.springframework.transaction.support.TransactionSynchronizationManager;[m[41m[m
+ [m
+ import com.example.project_bankingsystem.dto.UserDto;[m
+ import com.example.project_bankingsystem.entity.BankAccountEntity;[m
+[36m@@ -37,12 +38,19 @@[m [mpublic class SignUpService {[m
+      */[m
+     @Transactional(rollbackFor = { Exception.class })[m
+     public UserDto signup(UserDto userDto) {[m
+[32m+[m[32m        if (!userDto.getName().isEmpty()) {[m[41m[m
+[32m+[m[32m            System.out.println("hi");[m[41m[m
+[32m+[m[32m        }[m[41m[m
+[32m+[m[32m        System.out.println("SIGNUP SERVICE userDto: " + userDto);[m[41m[m
+         String pw = encodePassword(userDto.getPassword()); // 비밀번호 Bcrypt로 암호화[m
+         String account = createAccount();[m
+[32m+[m[32m        System.out.println("account: " + account);[m[41m[m
+         UserEntity userEntity = mapToUserEntity(userDto, pw);[m
+         BankAccountEntity bankAccountEntity = mapToBankAccountEntity(userEntity, pw);[m
+[32m+[m[32m        System.out.println(checkAccount(account));[m[41m[m
+         // 계좌가 중복이면 다시 생성[m
+         if (!checkAccount(account)) {[m
+[32m+[m[32m            System.out.println("중복X ?!");[m[41m[m
+             userEntity.setAccount(account);[m
+             bankAccountEntity.setAccount(account);[m
+         } else {[m
+[36m@@ -58,6 +66,8 @@[m [mpublic class SignUpService {[m
+         bankAccountRepository.save(bankAccountEntity);[m
+         bankMainRepository.save(bankMainEntity);[m
+ [m
+[32m+[m[32m        // 트랜잭션 동작여부 확인[m[41m[m
+[32m+[m[32m        System.out.println("inTransaction: " + TransactionSynchronizationManager.isActualTransactionActive());[m[41m[m
+         return mapToUserDto(userRepository.save(userEntity));[m
+     }[m
+ [m
+[36m@@ -80,6 +90,7 @@[m [mpublic class SignUpService {[m
+      * true - 중복, false - 생성가능[m
+      */[m
+     public boolean checkAccount(String account) {[m
+[32m+[m[32m        System.out.println("checkAccount account: " + account);[m[41m[m
+         return bankAccountRepository.findByaccount(account).isPresent();[m
+     }[m
+ [m
+[1mdiff --git a/src/main/webapp/WEB-INF/views/depotrans.jsp b/src/main/webapp/WEB-INF/views/depotrans.jsp[m
+[1mindex c68582c..0c47f3c 100644[m
+[1m--- a/src/main/webapp/WEB-INF/views/depotrans.jsp[m
+[1m+++ b/src/main/webapp/WEB-INF/views/depotrans.jsp[m
+[36m@@ -19,7 +19,7 @@[m
+           <div class="navbar">[m
+             <div class="logo">[m
+               <img src="pic/logo.jpg" alt="" />[m
+[31m-              <h1>jobs</h1>[m
+[32m+[m[32m              <h1>BANK</h1>[m[41m[m
+             </div>[m
+             <ul>[m
+               <li>[m
+[1mdiff --git a/src/main/webapp/WEB-INF/views/home.jsp b/src/main/webapp/WEB-INF/views/home.jsp[m
+[1mindex c004f1c..b7991e0 100644[m
+[1m--- a/src/main/webapp/WEB-INF/views/home.jsp[m
+[1m+++ b/src/main/webapp/WEB-INF/views/home.jsp[m
+[36m@@ -19,7 +19,6 @@[m
+           <div class="navbar">[m
+             <div class="logo">[m
+               <img src="pic/logo.jpg" alt="" />[m
+[31m-              <h1>jobs</h1>[m
+             </div>[m
+             <ul>[m
+               <li>[m
+[1mdiff --git a/src/main/webapp/WEB-INF/views/myhome.jsp b/src/main/webapp/WEB-INF/views/myhome.jsp[m
+[1mindex b3c07f3..2ebf7db 100644[m
+[1m--- a/src/main/webapp/WEB-INF/views/myhome.jsp[m
+[1m+++ b/src/main/webapp/WEB-INF/views/myhome.jsp[m
+[36m@@ -19,7 +19,7 @@[m
+           <div class="navbar">[m
+             <div class="logo">[m
+               <img src="pic/logo.jpg" alt="" />[m
+[31m-              <h1>jobs</h1>[m
+[32m+[m[32m              <h1>BANK</h1>[m[41m[m
+             </div>[m
+             <ul>[m
+               <li>[m
+[36m@@ -111,7 +111,7 @@[m
+                   <th>date</th>[m
+                   <th>disposal</th>[m
+                   <th>balance</th>[m
+[31m-                  <th>balance</th>[m
+[32m+[m[32m                  <th>name</th>[m[41m[m
+                 </tr>[m
+               </thead>[m
+               <!-- private String myaccount; // 계좌[m
+[1mdiff --git a/src/main/webapp/WEB-INF/views/myinfo.jsp b/src/main/webapp/WEB-INF/views/myinfo.jsp[m
+[1mindex 2c20ed0..ef2895d 100644[m
+[1m--- a/src/main/webapp/WEB-INF/views/myinfo.jsp[m
+[1m+++ b/src/main/webapp/WEB-INF/views/myinfo.jsp[m
+[36m@@ -19,7 +19,7 @@[m
+           <div class="navbar">[m
+             <div class="logo">[m
+               <img src="pic/logo.jpg" alt="" />[m
+[31m-              <h1>jobs</h1>[m
+[32m+[m[32m              <h1>BANK</h1>[m[41m[m
+             </div>[m
+             <ul>[m
+               <li>[m
+[1mdiff --git a/src/main/webapp/WEB-INF/views/success.jsp b/src/main/webapp/WEB-INF/views/success.jsp[m
+[1mindex be0ed31..8034376 100644[m
+[1m--- a/src/main/webapp/WEB-INF/views/success.jsp[m
+[1m+++ b/src/main/webapp/WEB-INF/views/success.jsp[m
+[36m@@ -19,7 +19,7 @@[m
+           <div class="navbar">[m
+             <div class="logo">[m
+               <img src="pic/logo.jpg" alt="" />[m
+[31m-              <h1>jobs</h1>[m
+[32m+[m[32m              <h1>BANK</h1>[m[41m[m
+             </div>[m
+             <ul>[m
+               <li>[m
+[1mdiff --git a/src/test/java/com/example/project_bankingsystem/ProjectBankingsystemApplicationTests.java b/src/test/java/com/example/project_bankingsystem/ProjectBankingsystemApplicationTests.java[m
+[1mindex 8de7495..aaef2f1 100644[m
+[1m--- a/src/test/java/com/example/project_bankingsystem/ProjectBankingsystemApplicationTests.java[m
+[1m+++ b/src/test/java/com/example/project_bankingsystem/ProjectBankingsystemApplicationTests.java[m
+[36m@@ -1,13 +1,43 @@[m
+ package com.example.project_bankingsystem;[m
+ [m
+[32m+[m[32mimport static org.mockito.Mockito.when;[m
+[32m+[m
+[32m+[m[32mimport org.assertj.core.api.Assertions;[m
+ import org.junit.jupiter.api.Test;[m
+[32m+[m[32mimport org.junit.jupiter.api.extension.ExtendWith;[m
+[32m+[m[32mimport org.mockito.InjectMocks;[m
+[32m+[m[32mimport org.mockito.Mock;[m
+[32m+[m[32mimport org.mockito.Mockito;[m
+[32m+[m[32mimport org.mockito.junit.jupiter.MockitoExtension;[m
+ import org.springframework.boot.test.context.SpringBootTest;[m
+ [m
+[32m+[m[32mimport com.example.project_bankingsystem.api.service.SignUpService;[m
+[32m+[m[32mimport com.example.project_bankingsystem.dto.UserDto;[m
+[32m+[m[32mimport com.example.project_bankingsystem.entity.UserEntity;[m
+[32m+[m[32mimport com.example.project_bankingsystem.repository.UserRepository;[m
+[32m+[m
+[32m+[m[32m//@ExtendWith(MockitoExtension.class)[m
+ @SpringBootTest[m
+ class ProjectBankingsystemApplicationTests {[m
+[32m+[m	[32m// @Mock[m
+[32m+[m	[32m// private UserRepository userRepository;[m
+[32m+[m
+[32m+[m	[32m// @InjectMocks[m
+[32m+[m	[32m// private SignUpService signUpService;[m
+ [m
+ 	@Test[m
+[31m-	void contextLoads() {[m
+[32m+[m	[32mpublic void contextLoads() {[m
+[32m+[m		[32m// UserEntity userEntity =[m
+[32m+[m		[32m// UserEntity.builder().name("aff").email("aff@aff.com").password("aff")[m
+[32m+[m		[32m// .phone("010-0000-0000").build();[m
+[32m+[m		[32m// UserDto userDto =[m
+[32m+[m		[32m// UserDto.builder().name("ccc").email("ccc@ccc.com").password("ccc").phone("010-0000-0000")[m
+[32m+[m		[32m// .role("USER").build();[m
+[32m+[m
+[32m+[m		[32m// when(userRepository.save(Mockito.any(UserEntity.class))).thenReturn(userEntity);[m
+[32m+[m		[32m// UserDto savedUser = signUpService.signup(userDto);[m
+[32m+[m		[32m// Assertions.assertThat(savedUser).isNotNull();[m
+[32m+[m
+ 	}[m
+ [m
+ }[m

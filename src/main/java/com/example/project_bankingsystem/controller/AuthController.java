@@ -35,8 +35,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserDto userDto, HttpServletResponse response)
             throws IOException {
+        System.out.println("aaa" + userDto.getId() + " " + userDto.getEmail());
         tokenDto = authService.login(userDto, response);
-
+        System.out.println("token " + tokenDto.getAccessToken());
         // // HttpHeaders httpHeaders = new HttpHeaders();
         response.sendRedirect("/myhome");
 
@@ -56,13 +57,6 @@ public class AuthController {
 
         return new ModelAndView("myhome", "list",
                 accountService.myaccount(mapToUserDto(userRepository.findByemail(email).get()))); // -> accountDto가 필요함
-
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        System.out.println("zzzzzzzzzzz");
-        return "test";
     }
 
     public UserDto mapToUserDto(UserEntity userEntity) {

@@ -31,7 +31,7 @@ public class SecurityConfig {
     // authorizeHttpRequests 부분 정리 필요함. httpBasic <<<
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(c -> c.disable())
+        http.csrf(csrf -> csrf.disable())
 
                 .exceptionHandling(e -> e.authenticationEntryPoint(jwtEntryPoint))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

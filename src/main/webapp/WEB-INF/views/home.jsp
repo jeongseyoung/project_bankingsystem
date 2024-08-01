@@ -19,7 +19,6 @@
           <div class="navbar">
             <div class="logo">
               <img src="pic/logo.jpg" alt="" />
-              <h1>jobs</h1>
             </div>
             <ul>
               <li>

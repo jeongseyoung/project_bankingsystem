@@ -3,6 +3,7 @@ package com.example.project_bankingsystem.service;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.example.project_bankingsystem.dto.UserDto;
 import com.example.project_bankingsystem.entity.BankAccountEntity;
@@ -37,12 +38,19 @@ public class SignUpService {
      */
     @Transactional(rollbackFor = { Exception.class })
     public UserDto signup(UserDto userDto) {
+        if (!userDto.getName().isEmpty()) {
+            System.out.println("hi");
+        }
+        System.out.println("SIGNUP SERVICE userDto: " + userDto);
         String pw = encodePassword(userDto.getPassword()); // 비밀번호 Bcrypt로 암호화
         String account = createAccount();
+        System.out.println("account: " + account);
         UserEntity userEntity = mapToUserEntity(userDto, pw);
         BankAccountEntity bankAccountEntity = mapToBankAccountEntity(userEntity, pw);
+        System.out.println(checkAccount(account));
         // 계좌가 중복이면 다시 생성
         if (!checkAccount(account)) {
+            System.out.println("중복X ?!");
             userEntity.setAccount(account);
             bankAccountEntity.setAccount(account);
         } else {
@@ -58,6 +66,8 @@ public class SignUpService {
         bankAccountRepository.save(bankAccountEntity);
         bankMainRepository.save(bankMainEntity);
 
+        // 트랜잭션 동작여부 확인
+        System.out.println("inTransaction: " + TransactionSynchronizationManager.isActualTransactionActive());
         return mapToUserDto(userRepository.save(userEntity));
     }
 
@@ -80,6 +90,7 @@ public class SignUpService {
      * true - 중복, false - 생성가능
      */
     public boolean checkAccount(String account) {
+        System.out.println("checkAccount account: " + account);
         return bankAccountRepository.findByaccount(account).isPresent();
     }
 

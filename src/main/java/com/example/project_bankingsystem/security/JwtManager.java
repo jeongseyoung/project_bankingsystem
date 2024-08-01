@@ -38,7 +38,7 @@ public class JwtManager {
                 .expiration(expireDate)
                 .signWith(getSecretKey(key))
                 .compact();
-
+        System.out.println(token);
         return token;
     }
 

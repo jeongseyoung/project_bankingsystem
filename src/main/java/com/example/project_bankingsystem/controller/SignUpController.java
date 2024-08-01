@@ -37,6 +37,7 @@ public class SignUpController {
     // @ModelAttribute
     @PostMapping(value = "/signup")
     public ModelAndView signup(UserDto userDto) {
+        System.out.println("controller signup: ");
         if (userDto == null || userRepository.existsByemail(userDto.getEmail())) {
             throw new CustomException("이메일을 다시 입력하세요.", ErrorCode.EMAIL_DUPLICATE);
         }
