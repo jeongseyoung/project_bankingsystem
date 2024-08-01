@@ -12,7 +12,7 @@ Tools<br>
 - MySQL
 - Bcrypt, JWT
 - HTML, Css
-- LOMBOK, JPA
+- LOMBOK, JPA <br>
 
 
 
