@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@NoArgsConstructor 
 public class TokenDto {
     private String accessToken;
     private String refreshToken;
