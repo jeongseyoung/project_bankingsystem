@@ -11,7 +11,7 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
+@Getter      
 @Setter
 @Entity
 public class RolesEntity {
