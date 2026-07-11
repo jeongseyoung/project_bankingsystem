@@ -24,7 +24,6 @@ import com.example.project_bankingsystem.dto.UserDto;
 import com.example.project_bankingsystem.entity.UserEntity;
 import com.example.project_bankingsystem.repository.UserRepository;
 import com.example.project_bankingsystem.service.SignUpService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(controllers = SignUpController.class)
 @AutoConfigureMockMvc
